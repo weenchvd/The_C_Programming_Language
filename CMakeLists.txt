@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 project(The_C_Programming_Language C)
 
 set(CMAKE_C_STANDARD 99)
-set(FILE_NAME 0001_hello)
+set(FILE_NAME 0005_fahr-cels)
 set(SOURCE_C_LIST Source/${FILE_NAME}.c)
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/)
 
