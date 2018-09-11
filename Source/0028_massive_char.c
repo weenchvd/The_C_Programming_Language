@@ -1,48 +1,40 @@
-/** Exercise 1.16
- * not finished TODO */
+/** Exercise 1.16 */
 
 #include <stdio.h>
 
-#define MAXLENGTH 10 /* the maximum size of the input string */
+#define MAXLINE 1000 /* the maximum size of the input string */
 
 int mygetline(char line[], int lim);
 void copy(char to[], char from[]);
 
-/** print the longest line */
+/* print the longest line */
 int main()
 {
     int len; /* length of the current line */
     int max; /* the length of the maximum of the rows scanned */
-    int mult = 1;
-    int maxlength = MAXLENGTH * mult;
-    char line[maxlength]; /* current line */
-    char longest[maxlength]; /* longest string */
+    char line[MAXLINE]; /* current line */
+    char longest[MAXLINE]; /* longest string */
     max = 0;
     printf("\nUse \"New Line + `` + Enter\" to output the result\n");
-    while((len = mygetline(line, maxlength)) > 0)
-        if(len == (maxlength - 1) && line[maxlength - 2] != '\n')
+    while((len = mygetline(line, MAXLINE)) > 0)
+    {
+        if (len == MAXLINE - 1 && line[MAXLINE - 2] != '\n')
         {
-            while(1)
+            int c;
+            int trig = 1;
+            while ((c = getchar()) != EOF && trig)
             {
-                mult++;
-                maxlength = MAXLENGTH * mult;
-                line[maxlength];
-                longest[maxlength];
-                if((len = len + mygetline(line, maxlength)) > (maxlength - MAXLENGTH - 1))
-                {
-
-                }
-
-
-                break;
+                len++;
+                if (c == '\n')
+                    trig = 0;
             }
-
         }
-        else if(len > max)
+        if (len > max)
         {
             max = len;
             copy(longest, line);
         }
+    }
     if(max > 0) /* was there at least one long line */
         printf("%s", longest);
     return 0;
