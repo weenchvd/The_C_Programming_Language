@@ -1,5 +1,4 @@
-/** Exercise 1.18
- * not finished TODO*/
+/** Exercise 1.18 */
 
 #include <stdio.h>
 
@@ -18,16 +17,19 @@ int main()
             for(int i = 0, trig = 0; i < len; i++) {
                 if(line[i] != ' ' && line[i] != '\t') {
                     printf("%c", line[i]);
+                    trig = 0;
                 }
-                else if(line[i] == '\t')
-                    printf(" ");
-                else if(line[i] == ' ') {
+                else if(line[i] == '\t') {
                     if (trig == 0) {
-                        printf("%c", line[i]);
+                        printf(" ");
                         trig = 1;
                     }
-                    else if(line[i+1] != ' ')
-                        trig = 0;
+                }
+                else if(line[i] == ' ') {
+                    if (trig == 0) {
+                        printf(" ");
+                        trig = 1;
+                    }
                 }
             }
         }
