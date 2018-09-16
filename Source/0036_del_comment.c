@@ -1,5 +1,4 @@
-/** Exercise 1.23
- * not finished TODO*/
+/** Exercise 1.23 */
 
 #include <stdio.h>
 
@@ -10,13 +9,12 @@
 int getallchar(char m_text[], int size);
 int getposition(char m_text[], int currentcarriageposition);
 
-int cpos, isquotes, iscomment1, iscommentn;
+int iscomment1, iscommentn;
 
 int main()
 {
     printf("Use \'New line\' + \"``\" + \"Enter\" to output the result\n");
-    int len;
-    cpos = -1;
+    int len, isquotes;
     isquotes = FALSE;
     iscomment1 = FALSE;
     iscommentn = FALSE;
@@ -25,11 +23,13 @@ int main()
     for(int i = 0; i < len; i++) {
         if(isquotes == FALSE && m_text[i] == '/' && m_text[i + 1] == '*') {
             iscommentn = TRUE;
-            i = getposition(m_text, i);
+            i = getposition(m_text, (i + 2));
+            iscommentn = FALSE;
         }
         else if(isquotes == FALSE && m_text[i] == '/' && m_text[i + 1] == '/') {
             iscomment1 = TRUE;
-            i = getposition(m_text, i);
+            i = getposition(m_text, (i + 2));
+            iscomment1 = FALSE;
         }
         else if(isquotes == FALSE && m_text[i] == '\"' && m_text[i - 1] != '\\') {
             isquotes = TRUE;
@@ -58,5 +58,16 @@ int getallchar(char m_text[], int size)
 
 int getposition(char m_text[], int ccpos)
 {
-    return;
+    if(iscommentn == TRUE) {
+        while(m_text[ccpos] != '*' || m_text[ccpos + 1] != '/') {
+            ccpos++;
+        }
+        return (ccpos + 2);
+    }
+    else if(iscomment1 == TRUE) {
+        while(m_text[ccpos] != '\n') {
+            ccpos++;
+        }
+        return ccpos;
+    }
 }
