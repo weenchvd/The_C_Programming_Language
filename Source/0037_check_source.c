@@ -15,12 +15,15 @@ void checksinglequotes(char m_text[], int currentcarriageposition);
 void checkquotes(char m_text[], int currentcarriageposition);
 void checkescape(char m_text[], int currentcarriageposition);
 void checkcommentn(char m_text[], int currentcarriageposition);
-int getnewcarriagepositioncomment1(char m_text[], int currentcarriageposition);
-int getnewcarriagepositioncommentn(char m_text[], int currentcarriageposition);
+
+int checksinglequotes_getnewcarriageposition(char m_text[], int currentcarriageposition);
+int checkquotes_getnewcarriageposition(char m_text[], int currentcarriageposition);
+int checkcomment1_getnewcarriageposition(char m_text[], int currentcarriageposition);
+int checkcommentn_getnewcarriageposition(char m_text[], int currentcarriageposition);
 
 int brace, squarebkt, roundbkt, singlequotes, quotes, esc, commentn;
 int isbrace, issquarebkt, isroundbkt, issinglequotes, isquotes, isesc, iscomment1, iscommentn;
-int errbrace, errsquarebkt, errroundbkt, errsinglequotes, errquotes, erresc, errcommentn;
+int errbrace, errsquarebkt, errroundbkt, errsinglequotes, errquotes, errescape, errcomment1, errcommentn;
 
 int main()
 {
@@ -29,7 +32,8 @@ int main()
     brace = 0, squarebkt = 0, roundbkt = 0, singlequotes = 0, quotes = 0, esc = 0, commentn = 0;
     isbrace = FALSE, issquarebkt = FALSE, isroundbkt = FALSE, issinglequotes = FALSE, isquotes = FALSE;
     isesc = FALSE, iscommentn = FALSE;
-    errbrace = 0, errsquarebkt = 0, errroundbkt = 0, errsinglequotes = 0, errquotes = 0, erresc = 0, errcommentn = 0;
+    errbrace = 0, errsquarebkt = 0, errroundbkt = 0, errsinglequotes = 0, errquotes = 0, errescape = 0;
+    errcomment1 = 0, errcommentn = 0;
     char m_text[SIZE];
     len = getallchar(m_text, SIZE);
     for(int i = 0; i < len; i++) {
@@ -44,14 +48,29 @@ int main()
         else if() {
 
         }
+        else if(m_text[i] == '\'') {
+            if((i = checksinglequotes_getnewcarriageposition(m_text, (i + 1))) == -1) {
+                errsinglequotes++;
+                break;
+            }
+        }
+        else if(m_text[i] == '\"') {
+            if((i = checkquotes_getnewcarriageposition(m_text, (i + 1))) == -1) {
+                errquotes++;
+                break;
+            }
+        }
         else if(m_text[i] == '/' && m_text[i + 1] == '*') {
-            if((i = getnewcarriagepositioncommentn(m_text, (i + 2)) == -1) {
+            if((i = checkcommentn_getnewcarriageposition(m_text, (i + 2))) == -1) {
                 errcommentn++;
                 break;
             }
         }
         else if(m_text[i] == '/' && m_text[i + 1] == '/') {
-            i = getnewcarriagepositioncomment1(m_text, (i + 2));
+            if((i = checkcomment1_getnewcarriageposition(m_text, (i + 2))) == -1) {
+                errcomment1++;
+                break;
+            }
         }
     }
 
@@ -63,7 +82,7 @@ int main()
 
 
     if(errbrace > 0) {
-        printf("");
+        printf("sdfghj /* fwefhief */ [ { ( //sdjkf");
     }
     return 0;
 }
@@ -133,12 +152,92 @@ void checkcommentn(char m_text[], int i)
 
 }
 
-int getnewcarriagepositioncomment1(char m_text[], int i)
+int checksinglequotes_getnewcarriageposition(char m_text[], int i)
 {
-
+    if(m_text[i] != '\0') {
+        if(m_text[i] == '\\') {
+            if(m_text[i + 1] != '\0' && m_text[i + 2] != '\0') {
+                if(m_text[i + 1] != 'n' && m_text[i + 1] != 't' && m_text[i + 1] != 'v' && m_text[i + 1] != 'b' &&
+                        m_text[i + 1] != 'r' && m_text[i + 1] != 'f' && m_text[i + 1] != 'a' && m_text[i + 1] != '?' &&
+                        m_text[i + 1] != '\\' && m_text[i + 1] != '\'' && m_text[i + 1] != '\"') {
+                    errescape++;
+                }
+                if(m_text[i + 2] == '\'') {
+                    return (i + 2);
+                }
+                else {
+                    errsinglequotes++;
+                    return (i + 1);
+                }
+            }
+            else {
+                return -1;
+            }
+        }
+        else {
+            if(m_text[i + 1] != '\0') {
+                if(m_text[i + 1] == '\'') {
+                    return (i + 1);
+                }
+                else {
+                    errsinglequotes++;
+                    return i;
+                }
+            }
+            else {
+                return -1;
+            }
+        }
+    }
+    else {
+        return -1;
+    }
 }
 
-int getnewcarriagepositioncommentn(char m_text[], int i)
+int checkquotes_getnewcarriageposition(char m_text[], int i)
 {
+    while(m_text[i] != '\0') {
+        if(m_text[i] == '\"') {
+            return i;
+        }
+        else if(m_text[i] == '\n') {
+            errquotes++;
+            return i;
+        }
+        else if(m_text[i] == '\\') {
+            i++;
+            if(m_text[i] != 'n' && m_text[i] != 't' && m_text[i] != 'v' && m_text[i] != 'b' && m_text[i] != 'r' &&
+                    m_text[i] != 'f' && m_text[i] != 'a' && m_text[i] != '?' &&
+                    m_text[i] != '\\' && m_text[i] != '\'' && m_text[i] != '\"') {
+                errescape++;
+            }
+        }
+        i++;
+    }
+    return -1;
+}
 
+int checkcomment1_getnewcarriageposition(char m_text[], int i)
+{
+    while(m_text[i] != '\0') {
+        if(m_text[i] == '\n') {
+            return i;
+        }
+        i++;
+    }
+    return -1;
+}
+
+int checkcommentn_getnewcarriageposition(char m_text[], int i)
+{
+    while(m_text[i] != '\0') {
+        if(m_text[i] == '*' && m_text[i + 1] == '/') {
+            return (i + 1);
+        }
+        else if(m_text[i] == '/' && m_text[i + 1] == '*') {
+            errcommentn++;
+        }
+        i++;
+    }
+    return -1;
 }
