@@ -1,9 +1,8 @@
-/** Exercise 1.24
- * not finished TODO*/
+/** Exercise 1.24 */
 
 #include <stdio.h>
 
-#define SIZE 10000
+#define SIZE 20000
 #define TRUE 1
 #define FALSE 0
 
@@ -49,6 +48,19 @@ int main()
             if((i = checkquotes_getnewcarriageposition(m_text, (i + 1))) == -1) {
                 errquotes++;
                 break;
+            }
+        }
+        else if(m_text[i] == '\\') {
+            if(m_text[i + 2] == '\'') {
+                errsinglequotes++;
+                i = checksinglequotes_getnewcarriageposition(m_text, i);
+            }
+            else {
+                errquotes++;
+                if((i = checkquotes_getnewcarriageposition(m_text, i)) == -1) {
+                    errquotes++;
+                    break;
+                }
             }
         }
         else if(m_text[i] == '/' && m_text[i + 1] == '*') {
