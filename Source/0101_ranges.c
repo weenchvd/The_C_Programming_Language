@@ -7,7 +7,7 @@
 
 long long int exponentiation(long long int x, int y); /** x^y */
 unsigned long long int exponentiationU(unsigned long long int x, int y); /** x^y */
-long double exponentiationM(long double x, int y); /** x^y */
+long double exponentiationF(long double x, int y); /** x^y */
 
 int main()
 {
@@ -61,14 +61,14 @@ int main()
     printf("----------------------------------------------------------------------------------------\n");
     printf("Ranges from \"float.h\"\n");
     printf("Range FLOAT:                   from %22g    to %22g\n", FLT_MIN, FLT_MAX);
-    printf("Range FLOAT: from %.50f\n"
-           "             to %f\n", FLT_MIN, FLT_MAX);
+    /*printf("Range FLOAT: from %.50f\n"
+           "             to %f\n", FLT_MIN, FLT_MAX);*/
     printf("Range DOUBLE:                  from %22g    to %22g\n", DBL_MIN, DBL_MAX);
     printf("Range LONG DOUBLE:             from %22Lg    to %22Lg\n", LDBL_MIN, LDBL_MAX);
     printf("----------------------------------------------------------------------------------------\n");
     printf("Ranges calculated\n");
-    printf("Range FLOAT:                   from %22g    to %22g\n",
-            (float) 1 / exponentiationU(2, 7), 0.0);
+    printf("Range FLOAT:                   from %22Lg    to %22Lg\n",
+           1.0 / exponentiationF(2.0, (int) (exponentiationU(2, 7) - 2)), 0.0L);
     printf("========================================================================================\n");
     return 0;
 }
@@ -93,12 +93,12 @@ unsigned long long int exponentiationU(unsigned long long int x, int y)
     }
 }
 
-/*long double exponentiationM(long double x, int y)
+long double exponentiationF(long double x, int y)
 {
     if(y == 0) {
-        return 1;
+        return 1.0L;
     }
     else {
-        return x * exponentiationM()
+        return x * exponentiationF(x, y - 1);
     }
-}*/
+}
