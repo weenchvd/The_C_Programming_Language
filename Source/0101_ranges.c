@@ -1,5 +1,4 @@
-/** Exercise 2.1
- * not finished TODO*/
+/** Exercise 2.1 */
 
 #include <stdio.h>
 #include <limits.h>
