@@ -1,8 +1,6 @@
-/** Exercise 2.3
- * not finished TODO*/
+/** Exercise 2.3 */
 
 #include <stdio.h>
-#include <ctype.h>
 
 #define MAXLEN 13
 #define TRUE 1
@@ -18,19 +16,25 @@ int main()
     char a_hex[MAXLEN];
     trig = 1;
     printf("\033[35m"
-           "---------------------------------------------------\n"
-           "|  This program converts a HEX number to decimal  |\n"
-           "|  Use \'New line\' + \"``\" + \"Enter\" to exit        |\n"
-           "---------------------------------------------------\n"
+           "--------------------------------------------------------------------\n"
+           "|  This program converts a "
+           "\033[1;36m"
+           "hexadecimal"
+           "\033[35m"
+           " number to a "
+           "\033[1;32m"
+           "decimal"
+           "\033[35m"
+           " number  |\n"
+           "|  Use \'New line\' + \"``\" + \"Enter\" to exit                         |\n"
+           "--------------------------------------------------------------------\n"
            "\033[0m");
     while(trig) {
         printf("\033[0m"
-               "\nPlease enter the HEX number:\n"
+               "\nEnter a hexadecimal number:\n"
                "\033[1;36m");
         if((len = gethex(a_hex, MAXLEN)) > 0) {
-            printf("\033[0m"
-                   "Decimal:\n"
-                   "\033[1;32m"
+            printf("\033[1;32m"
                    "%lli\n"
                    "\033[0m", htol(a_hex));
         }
@@ -39,13 +43,18 @@ int main()
         }
         else if(len == -2) {
             printf("\033[31m"
-                   "\b\bText entered is not a HEX number!\n"
+                   "Text entered is not a hexadecimal number\n"
                    "\033[0m");
         }
         else if(len == -3) {
             printf("\033[31m"
-                   "\b\bText entered is too long. Enter text not longer than %d characters\n"
+                   "Text entered is too long. Enter text not longer than %d characters\n"
                    "\033[0m", MAXLEN-1);
+        }
+        else if(len == -4) {
+            printf("\033[31m"
+                   "An error has occurred\n"
+                   "\033[0m");
         }
     }
     return 0;
@@ -57,19 +66,16 @@ int gethex(char a_hex[], int lim)
     int isxuppercase, isxlowercase;
     isxuppercase = FALSE;
     isxlowercase = FALSE;
-    for(i = 0; i < lim-1 && (c = getchar()) != EOF && c != '\n'; i++) {
-        if(c == '`') {
-            if(getchar() == '`') {
-                return -1;
-            }
-            else {
-                while(getchar() != '\n');
-                return -2;
-            }
-        }
+    for(i = 0; i < lim && (c = getchar()) != EOF && c != '\n'; i++) {
         if(i == 0) {
             if(c == '0') {
                 a_hex[i] = c;
+            }
+            else if(c == '`' && (c = getchar()) == '`') {
+                return -1;
+            }
+            else if(c == '\n') {
+                return -2;
             }
             else {
                 while(getchar() != '\n');
@@ -90,10 +96,6 @@ int gethex(char a_hex[], int lim)
                 return -2;
             }
         }
-        else if(i == lim-2) {
-            while(getchar() != '\n');
-            return -3;
-        }
         else if(isxuppercase == TRUE && ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'F'))) {
             a_hex[i] = c;
         }
@@ -108,6 +110,7 @@ int gethex(char a_hex[], int lim)
             return -2;
         }
     }
+
     if(c == '\n' && i > 0) {
         a_hex[i] = '\0';
         return i;
@@ -115,7 +118,11 @@ int gethex(char a_hex[], int lim)
     else if(c == '\n' && i == 0) {
         return 0;
     }
-    return -2;
+    else if(i == lim) {
+        while(getchar() != '\n');
+        return -3;
+    }
+    else return -4;
 }
 
 long long int htol(const char a_hex[])
