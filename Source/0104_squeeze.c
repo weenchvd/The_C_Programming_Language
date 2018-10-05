@@ -3,8 +3,8 @@
 
 #include <stdio.h>
 
-#define MAXLEN1 10001
-#define MAXLEN2 501
+#define MAXLEN1 21
+#define MAXLEN2 11
 #define TRUE 1
 #define FALSE 0
 
@@ -13,41 +13,41 @@ void squeeze(char array_string1[], char array_string2[]);
 
 int main()
 {
-    printf("\033[35m"
+    printf("\033[0;35m"
            "---------------------------------------------------------------------------------------------\n"
-           "|  This program removes from the string "
+           "|  This program removes from the "
            "\033[1;36m"
-           "s1"
-           "\033[35m"
-           " all the characters that appear in the string "
+           "string s1"
+           "\033[0;35m"
+           " all the characters that appear in the "
            "\033[1;32m"
-           "s2"
-           "\033[35m"
+           "string s2"
+           "\033[0;35m"
            "  |\n"
            "|  Use \'New line\' + \"``\" + \"Enter\" to exit the program                                      |\n"
            "|  Use \'New line\' + \"``\" + \"Enter\" to complete input                                        |\n"
-           "---------------------------------------------------------------------------------------------\n\n"
-           "\033[0m");
+           "---------------------------------------------------------------------------------------------\n"
+           "\033[0;0m");
     int len1, len2;
     short int trig, err;
     char a_s1[MAXLEN1];
     char a_s2[MAXLEN2];
     trig = TRUE;
-    err = FALSE;
     while(trig) {
-        printf("Enter the string "
+        err = FALSE;
+        printf("\n\nEnter the "
                "\033[1;36m"
-               "s1"
-               "\033[0m"
+               "string s1"
+               "\033[0;0m"
                ":\n");
         if((len1 = getstr(a_s1, MAXLEN1)) <= 0) {
             err = TRUE;
         }
         if(err == FALSE) {
-            printf("Enter the string "
+            printf("Enter the "
                    "\033[1;32m"
-                   "s2"
-                   "\033[0m"
+                   "string s2"
+                   "\033[0;0m"
                    ":\n");
         }
         if(err == FALSE && (len2 = getstr(a_s2, MAXLEN2)) <= 0) {
@@ -55,9 +55,9 @@ int main()
         }
         if(err == FALSE) {
             squeeze(a_s1, a_s2);
-            printf("\033[1;33m"
+            printf("\n\033[1;33m"
                    "Result:"
-                   "\033[0m"
+                   "\033[0;0m"
                    "\n%s\n", a_s1);
         }
         else if(len1 == -1 || len2 == -1) {
@@ -67,16 +67,19 @@ int main()
             printf("\033[31m"
                    "Text entered is too long. Enter text not longer than %d characters\n"
                    "\033[0m", MAXLEN1-1);
+            return -1;
         }
         else if(len2 == -2) {
             printf("\033[31m"
                    "Text entered is too long. Enter text not longer than %d characters\n"
                    "\033[0m", MAXLEN2-1);
+            return -1;
         }
         else if(len1 == -100 || len2 == -100) {
             printf("\033[31m"
                    "An error has occurred\n"
                    "\033[0m");
+            return -1;
         }
     }
     return 0;
@@ -85,31 +88,26 @@ int main()
 int getstr(char a_s[], int lim)
 {
     int i, c;
-    int lim1;
-    short int coun;
-    lim1 = lim-1+3;
-    for(i = coun = 0; i < lim1 && (c = getchar()) != EOF; i++) {
+    short int trig;
+    for(i = 0, trig = TRUE; i < lim-1 && trig == TRUE && (c = getchar()) != EOF; i++) {
         a_s[i] = c;
-        if(a_s[i] == '`') {
-            if(coun > 0) {
-                break;
-            }
-            else coun++;
+        if(a_s[i] == '`' && i > 0 && a_s[i-1] == '`') {
+            getchar();
+            trig = FALSE;
         }
-        else coun = 0;
     }
     if(a_s[0] == '`' && a_s[1] == '`') {
         return -1;
     }
-    else if(i == lim1) {
+    else if(i == lim-1) {
         return -2;
     }
     else if(c == EOF) {
         return -100;
     }
     else {
-        a_s[i-2] = '\0';
-        return i-2;
+        a_s[i-3] = '\0';
+        return i-3;
     }
 }
 
@@ -127,4 +125,5 @@ void squeeze(char a_s1[], char a_s2[])
             a_s1[j++] = a_s1[i];
         }
     }
+    a_s1[j] = '\0';
 }
