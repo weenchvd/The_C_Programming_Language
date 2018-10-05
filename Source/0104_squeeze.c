@@ -5,6 +5,8 @@
 
 #define MAXLEN1 10001
 #define MAXLEN2 501
+#define TRUE 1
+#define FALSE 0
 
 int getstr(char array_string[], int lim);
 void squeeze(char array_string1[], char array_string2[]);
@@ -27,22 +29,39 @@ int main()
            "---------------------------------------------------------------------------------------------\n\n"
            "\033[0m");
     int len1, len2;
-    int trig;
+    short int trig, err;
     char a_s1[MAXLEN1];
     char a_s2[MAXLEN2];
-    trig = 1;
+    trig = TRUE;
+    err = FALSE;
     while(trig) {
         printf("Enter the string "
                "\033[1;36m"
                "s1"
                "\033[0m"
                ":\n");
-        if((len1 = getstr(a_s1, MAXLEN1)) > 0 && (len2 = getstr(a_s2, MAXLEN2)) > 0) {
+        if((len1 = getstr(a_s1, MAXLEN1)) <= 0) {
+            err = TRUE;
+        }
+        if(err == FALSE) {
+            printf("Enter the string "
+                   "\033[1;32m"
+                   "s2"
+                   "\033[0m"
+                   ":\n");
+        }
+        if(err == FALSE && (len2 = getstr(a_s2, MAXLEN2)) <= 0) {
+            err = TRUE;
+        }
+        if(err == FALSE) {
             squeeze(a_s1, a_s2);
-            printf("Result:\n%s\n", a_s1);
+            printf("\033[1;33m"
+                   "Result:"
+                   "\033[0m"
+                   "\n%s\n", a_s1);
         }
         else if(len1 == -1 || len2 == -1) {
-            trig = 0;
+            trig = FALSE;
         }
         else if(len1 == -2) {
             printf("\033[31m"
@@ -60,15 +79,14 @@ int main()
                    "\033[0m");
         }
     }
-
     return 0;
 }
 
 int getstr(char a_s[], int lim)
 {
     int i, c;
-    int coun;
     int lim1;
+    short int coun;
     lim1 = lim-1+3;
     for(i = coun = 0; i < lim1 && (c = getchar()) != EOF; i++) {
         a_s[i] = c;
@@ -97,5 +115,16 @@ int getstr(char a_s[], int lim)
 
 void squeeze(char a_s1[], char a_s2[])
 {
-
+    int i, j, n;
+    short int trig;
+    for(i = j = 0; a_s1[i] != '\0'; i++) {
+        for(n = 0, trig = FALSE; a_s2[n] != '\0' && trig == FALSE; n++) {
+            if(a_s1[i] == a_s2[n]) {
+                trig = TRUE;
+            }
+        }
+        if(trig == FALSE) {
+            a_s1[j++] = a_s1[i];
+        }
+    }
 }
