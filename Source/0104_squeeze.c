@@ -1,10 +1,9 @@
-/** Exercise 2.4
- * not finished TODO*/
+/** Exercise 2.4 */
 
 #include <stdio.h>
 
-#define MAXLEN1 21
-#define MAXLEN2 11
+#define MAXLEN1 10004
+#define MAXLEN2 104
 #define TRUE 1
 #define FALSE 0
 
@@ -66,13 +65,15 @@ int main()
         else if(len1 == -2) {
             printf("\033[31m"
                    "Text entered is too long. Enter text not longer than %d characters\n"
-                   "\033[0m", MAXLEN1-1);
+                   "Line wrap is considered a character\n"
+                   "\033[0m", MAXLEN1-4);
             return -1;
         }
         else if(len2 == -2) {
             printf("\033[31m"
                    "Text entered is too long. Enter text not longer than %d characters\n"
-                   "\033[0m", MAXLEN2-1);
+                   "Line wrap is considered a character\n"
+                   "\033[0m", MAXLEN2-4);
             return -1;
         }
         else if(len1 == -100 || len2 == -100) {
@@ -89,17 +90,17 @@ int getstr(char a_s[], int lim)
 {
     int i, c;
     short int trig;
-    for(i = 0, trig = TRUE; i < lim-1 && trig == TRUE && (c = getchar()) != EOF; i++) {
+    for(i = 0, trig = TRUE; i < lim && trig == TRUE && (c = getchar()) != EOF; i++) {
         a_s[i] = c;
-        if(a_s[i] == '`' && i > 0 && a_s[i-1] == '`') {
-            getchar();
+        if(a_s[i] == '\n' && i > 1 && a_s[i-1] == '`' && a_s[i-2] == '`') {
             trig = FALSE;
+            i--;
         }
     }
     if(a_s[0] == '`' && a_s[1] == '`') {
         return -1;
     }
-    else if(i == lim-1) {
+    else if(i == lim) {
         return -2;
     }
     else if(c == EOF) {
