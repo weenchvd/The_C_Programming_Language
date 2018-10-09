@@ -30,43 +30,43 @@ int main()
            "setbits(x, p, n, y)"
            "\033[0;35m"
            "                                    |\n"
-           "|  Use \'New line\' + \"``\" + \"Enter\" to exit                         |\n"
+           "|  Use \"Ctrl\" + \"C\" to exit                                        |\n"
            "--------------------------------------------------------------------\n"
            "\033[0;0m");
     printf("\nEnter "
            "\033[1;36m"
            "x"
            "\033[0;0m"
-           ":");
+           ": ");
     if((lenx = getnumber(a_numx, MAXLEN1)) <= 0) {
         err = TRUE;
     }
     if(err == FALSE) {
-        printf("\nEnter "
+        printf("Enter "
                "\033[1;36m"
                "p"
                "\033[0;0m"
-               ":");
+               ": ");
         if((lenp = getnumber(a_nump, MAXLEN2)) <= 0) {
             err = TRUE;
         }
     }
     if(err == FALSE) {
-        printf("\nEnter "
+        printf("Enter "
                "\033[1;36m"
                "n"
                "\033[0;0m"
-               ":");
+               ": ");
         if((lenn = getnumber(a_numn, MAXLEN2)) <= 0) {
             err = TRUE;
         }
     }
     if(err == FALSE) {
-        printf("\nEnter "
+        printf("Enter "
                "\033[1;36m"
                "y"
                "\033[0;0m"
-               ":");
+               ": ");
         if((leny = getnumber(a_numy, MAXLEN1)) <= 0) {
             err = TRUE;
         }
@@ -79,7 +79,7 @@ int main()
         printf("\033[1;32m"
                "\nResult"
                "\033[0;0m"
-               ": %d\n", setbits(x, p, n, y));
+               ": %d\n\n", setbits(x, p, n, y));
     }
     else if(lenx == 0 || lenp == 0 || lenn == 0 || leny == 0) {
         printf("\033[31m"
@@ -132,5 +132,15 @@ int getnumber(char a_num[], int lim)
 
 int setbits(int x, short p, short n, int y)
 {
-    //return (x & ~(~0 << n)) | (y & ~(~0 << n));
+    if(p+1 > n) {
+        return (x & ~(~(~0 << n) << (p+1-n))) | ((y & ~(~0 << n)) << (p+1-n));
+    }
+    else if(p+1 == n) {
+        return (x & (~0 << n)) | (y & ~(~0 << n));
+    }
+    else if(p+1 < n) {
+        /*return (x & (~0 << (p+1))) | (y & ~(~0 << (p+1)));*/ //variant 1
+        /*return (x & (~0 << (p+1))) | ((y & ~(~0 << n)) >> (n-(p+1)));*/ //variant 2
+        return (x & (~0 << (p+1))) | ((y & ~(~0 << n)) >> (n-(p+1)));
+    }
 }
