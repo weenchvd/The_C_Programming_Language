@@ -1,5 +1,4 @@
-/** Exercise 2.6
- * not finished TODO*/
+/** Exercise 2.6 */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,6 +22,9 @@ int main()
     char a_nump[MAXLEN2];
     char a_numn[MAXLEN2];
     err = FALSE;
+    leny = 1;
+    lenp = 1;
+    lenn = 1;
     printf("\033[0;35m"
            "--------------------------------------------------------------------\n"
            "|  Function "
