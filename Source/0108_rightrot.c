@@ -1,5 +1,4 @@
 /** Exercise 2.8 */
-/** not finished TODO */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -109,5 +108,9 @@ int getnumber(char a_num[], int lim)
 
 int rightrot(int x, short n)
 {
-
+    while(n > 0) {
+        x = x >> 1;
+        n--;
+    }
+    return x;
 }
