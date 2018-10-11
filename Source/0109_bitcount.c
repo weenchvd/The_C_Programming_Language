@@ -1,5 +1,4 @@
 /** Exercise 2.9 */
-/** not finished TODO */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,7 +8,7 @@
 #define FALSE 0
 
 int getnumber(char array_number_char[], int lim);
-int bitcount(int x);
+int bitcount(unsigned x);
 
 int main()
 {
@@ -92,7 +91,11 @@ int getnumber(char a_num[], int lim)
     else return -100;
 }
 
-int bitcount(int x)
+int bitcount(unsigned x)
 {
-
+    int b;
+    for(b = 0; x != 0; b++) {
+        x &= (x-1);
+    }
+    return b;
 }
