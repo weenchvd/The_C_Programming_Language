@@ -1,9 +1,8 @@
 /** Exercise 2.10 */
-/** not finished TODO */
 
 #include <stdio.h>
 
-#define MAXLEN1 1004
+#define MAXLEN1 10004
 #define TRUE 1
 #define FALSE 0
 
@@ -92,5 +91,8 @@ int getstr(char a_s[], int lim)
 
 void lower(char a_s[])
 {
-
+    int i;
+    for(i = 0; a_s[i] != '\0'; i++) {
+        (a_s[i] >= 'A' && a_s[i] <= 'Z') ? a_s[i] = (a_s[i] + ('a' - 'A')) : FALSE;
+    }
 }
