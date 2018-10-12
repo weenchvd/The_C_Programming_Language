@@ -5,18 +5,19 @@
 #include <stdlib.h>
 
 #define MAXLEN 1000
+#define MAXLENTMP 10
 #define TRUE 1
 #define FALSE 0
 
 int getstr(char array_string[], int lim);
-int getnumber(char array_number_char[]);
+int getnumber(char array_string[], int array_number[], int quantity);
 int binsearch(int x, int array_number[], int n);
 
 int main()
 {
-    int len;
+    int len, qty;
     int err;
-    int coun;
+    int x;
     char a_str[MAXLEN];
     err = FALSE;
     printf("\033[0;35m"
@@ -43,12 +44,13 @@ int main()
     }
     if(err == FALSE) {
         int a_num[len];
+        qty = getnumber(a_str, a_num, len);
     }
     if(err == FALSE) {
         printf("\033[1;32m"
                "\nResult"
                "\033[0;0m"
-               ": %d\n\n", bitcount(x));
+               ": %d\n\n", binsearch(x, a_num[], qty));
     }
     else if(len == 0) {
         printf("\033[31m"
@@ -117,9 +119,19 @@ int getstr(char a_str[], int lim)
     else return -100;
 }
 
-int getnumber(char a_num[])
+int getnumber(char a_str[], int a_num[], int qty)
 {
-
+    int i, j, coun;
+    char a_tmp[MAXLENTMP];
+    for(i = 0, j = 0; i < qty; i++) {
+        for(coun = 0; a_str[j] != ' '; coun++, j++) {
+            a_tmp[coun] = a_str[j];
+        }
+        j++;
+        a_tmp[coun] = '\0';
+        a_num[i] = atoi(a_tmp);
+    }
+    return i;
 }
 
 int binsearch(int x, int a_num[], int n)
