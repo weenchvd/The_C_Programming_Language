@@ -45,8 +45,17 @@ int main()
     if(err == FALSE) {
         int a_num[len];
         qty = getnumber(a_str, a_num, len);
+        printf("\nEnter "
+               "\033[1;36m"
+               "x"
+               "\033[0;0m"
+               ": ");
+        if(getstr(a_str, MAXLEN) <= 0) {
+            err = TRUE;
+        }
     }
     if(err == FALSE) {
+        x = atoi(a_str);
         printf("\033[1;32m"
                "\nResult"
                "\033[0;0m"
@@ -136,5 +145,16 @@ int getnumber(char a_str[], int a_num[], int qty)
 
 int binsearch(int x, int a_num[], int n)
 {
-
+    int low, high, mid;
+    low = 0;
+    high = n-1;
+    mid = (low + high) / 2;
+    while() {
+        if(x < a_num[mid]) {
+            high = mid-1;
+        }
+        else {
+            low = mid;
+        }
+    }
 }
