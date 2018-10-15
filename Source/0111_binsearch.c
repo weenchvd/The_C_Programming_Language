@@ -17,7 +17,7 @@ int main()
 {
     int len, qty;
     int err;
-    int x;
+    int x, pos;
     char a_str[MAXLEN];
     err = FALSE;
     printf("\033[0;35m"
@@ -34,7 +34,7 @@ int main()
            " to exit                                                          |\n"
            "--------------------------------------------------------------------------------\n"
            "\033[0;0m");
-    printf("\nEnter the list of numbers separated by spaces and press "
+    printf("\nEnter the list of numbers in ascending order separated by spaces and press "
            "\033[1;33m"
            "ENTER"
            "\033[0;0m"
@@ -53,13 +53,23 @@ int main()
         if(getstr(a_str, MAXLEN) <= 0) {
             err = TRUE;
         }
+        else {
+            x = atoi(a_str);
+            pos = binsearch(x, a_num, qty);
+        }
     }
     if(err == FALSE) {
-        x = atoi(a_str);
-        printf("\033[1;32m"
-               "\nResult"
-               "\033[0;0m"
-               ": %d\n\n", binsearch(x, a_num[], qty));
+        if(pos > -1) {
+            printf("\033[1;32m"
+                   "\nNumber position"
+                   "\033[0;0m"
+                   ": %d\n\n", pos);
+        }
+        else {
+            printf("\033[1;32m"
+                   "\nNumber not found\n"
+                   "\033[0;0m");
+        }
     }
     else if(len == 0) {
         printf("\033[31m"
@@ -148,8 +158,8 @@ int binsearch(int x, int a_num[], int n)
     int low, high, mid;
     low = 0;
     high = n-1;
-    mid = (low + high) / 2;
-    while() {
+    while(high - low > 1) {
+        mid = (low + high) / 2;
         if(x < a_num[mid]) {
             high = mid-1;
         }
@@ -157,4 +167,11 @@ int binsearch(int x, int a_num[], int n)
             low = mid;
         }
     }
+    if(a_num[high] == x) {
+        return high;
+    }
+    else if(a_num[low] == x) {
+        return low;
+    }
+    else return -1;
 }
