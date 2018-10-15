@@ -1,5 +1,4 @@
 /** Exercise 3.1 */
-/** not finished TODO */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -143,7 +142,7 @@ int getnumber(char a_str[], int a_num[], int qty)
     int i, j, coun;
     char a_tmp[MAXLENTMP];
     for(i = 0, j = 0; i < qty; i++) {
-        for(coun = 0; a_str[j] != ' '; coun++, j++) {
+        for(coun = 0; a_str[j] != ' ' && a_str[j] != '\0'; coun++, j++) {
             a_tmp[coun] = a_str[j];
         }
         j++;
