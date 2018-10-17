@@ -1,5 +1,4 @@
 /** Exercise 3.3 */
-/** not finished TODO */
 
 #include <stdio.h>
 
@@ -113,12 +112,12 @@ void expand(char a_s1[], char a_s2[])
         && i+1 < n && a_s1[i+1] >= '0' && a_s1[i+1] <= '9'
         && a_s1[i-1] != a_s1[i+1]) {
             if(a_s1[i-1] < a_s1[i+1]) {
-                for(c = a_s1[i-1] + 1; c <= a_s1[i+1]; c++) {
+                for(c = a_s1[i-1] + 1; c < a_s1[i+1]; c++) {
                     a_s2[j++] = c;
                 }
             }
             else if(a_s1[i-1] > a_s1[i+1]) {
-                for(c = a_s1[i-1] - 1; c >= a_s1[i+1]; c--) {
+                for(c = a_s1[i-1] - 1; c > a_s1[i+1]; c--) {
                     a_s2[j++] = c;
                 }
             }
@@ -128,12 +127,12 @@ void expand(char a_s1[], char a_s2[])
         && i+1 < n && a_s1[i+1] >= 'A' && a_s1[i+1] <= 'Z'
         && a_s1[i-1] != a_s1[i+1]) {
             if(a_s1[i-1] < a_s1[i+1]) {
-                for(c = a_s1[i-1] + 1; c <= a_s1[i+1]; c++) {
+                for(c = a_s1[i-1] + 1; c < a_s1[i+1]; c++) {
                     a_s2[j++] = c;
                 }
             }
             else if(a_s1[i-1] > a_s1[i+1]) {
-                for(c = a_s1[i-1] - 1; c >= a_s1[i+1]; c--) {
+                for(c = a_s1[i-1] - 1; c > a_s1[i+1]; c--) {
                     a_s2[j++] = c;
                 }
             }
@@ -143,12 +142,12 @@ void expand(char a_s1[], char a_s2[])
                 && i+1 < n && a_s1[i+1] >= 'a' && a_s1[i+1] <= 'z'
                 && a_s1[i-1] != a_s1[i+1]) {
             if(a_s1[i-1] < a_s1[i+1]) {
-                for(c = a_s1[i-1] + 1; c <= a_s1[i+1]; c++) {
+                for(c = a_s1[i-1] + 1; c < a_s1[i+1]; c++) {
                     a_s2[j++] = c;
                 }
             }
             else if(a_s1[i-1] > a_s1[i+1]) {
-                for(c = a_s1[i-1] - 1; c >= a_s1[i+1]; c--) {
+                for(c = a_s1[i-1] - 1; c > a_s1[i+1]; c--) {
                     a_s2[j++] = c;
                 }
             }
