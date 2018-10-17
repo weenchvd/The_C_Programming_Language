@@ -37,7 +37,7 @@ int main()
     short int trig, err;
     char a_s1[MAXLEN1];
     char a_s2[MAXLEN2];
-    len1 = 0;
+    len2 = 0;
     trig = TRUE;
     while(trig) {
         err = FALSE;
@@ -46,7 +46,7 @@ int main()
                "string t"
                "\033[0;0m"
                ":\n");
-        if((len2 = getstr(a_s2, MAXLEN2)) <= 0) {
+        if((len1 = getstr(a_s1, MAXLEN1)) <= 0) {
             err = TRUE;
         }
         if(err == FALSE) {
@@ -59,7 +59,7 @@ int main()
         else if(len1 == -1 || len2 == -1) {
             trig = FALSE;
         }
-        else if(len2 == -2) {
+        else if(len1 == -2) {
             printf("\033[31m"
                    "Text entered is too long. Enter text not longer than %d characters\n"
                    "Line wrap is considered a character\n"
@@ -104,13 +104,58 @@ int getstr(char a_s[], int lim)
 
 void expand(char a_s1[], char a_s2[])
 {
-    int i, j;
-    for(i = j = 0; a_s2[i] != '\0'; i++, j++) {
-        switch(a_s2[i]) {
-            case '\n': a_s1[j++] = '\\'; a_s1[j] = 'n'; break;
-            case '\t': a_s1[j++] = '\\'; a_s1[j] = 't'; break;
-            default: a_s1[j] = a_s2[i]; break;
+    int i, j, n;
+    char c;
+    for(n = 0; a_s1[n] != '\0'; n++);
+    for(i = j = 0; a_s1[i] != '\0'; i++) {
+        if(a_s1[i] == '-'
+        && i-1 >= 0 && a_s1[i-1] >= '0' && a_s1[i-1] <= '9'
+        && i+1 < n && a_s1[i+1] >= '0' && a_s1[i+1] <= '9'
+        && a_s1[i-1] != a_s1[i+1]) {
+            if(a_s1[i-1] < a_s1[i+1]) {
+                for(c = a_s1[i-1] + 1; c <= a_s1[i+1]; c++) {
+                    a_s2[j++] = c;
+                }
+            }
+            else if(a_s1[i-1] > a_s1[i+1]) {
+                for(c = a_s1[i-1] - 1; c >= a_s1[i+1]; c--) {
+                    a_s2[j++] = c;
+                }
+            }
+        }
+        else if(a_s1[i] == '-'
+        && i-1 >= 0 && a_s1[i-1] >= 'A' && a_s1[i-1] <= 'Z'
+        && i+1 < n && a_s1[i+1] >= 'A' && a_s1[i+1] <= 'Z'
+        && a_s1[i-1] != a_s1[i+1]) {
+            if(a_s1[i-1] < a_s1[i+1]) {
+                for(c = a_s1[i-1] + 1; c <= a_s1[i+1]; c++) {
+                    a_s2[j++] = c;
+                }
+            }
+            else if(a_s1[i-1] > a_s1[i+1]) {
+                for(c = a_s1[i-1] - 1; c >= a_s1[i+1]; c--) {
+                    a_s2[j++] = c;
+                }
+            }
+        }
+        else if(a_s1[i] == '-'
+                && i-1 >= 0 && a_s1[i-1] >= 'a' && a_s1[i-1] <= 'z'
+                && i+1 < n && a_s1[i+1] >= 'a' && a_s1[i+1] <= 'z'
+                && a_s1[i-1] != a_s1[i+1]) {
+            if(a_s1[i-1] < a_s1[i+1]) {
+                for(c = a_s1[i-1] + 1; c <= a_s1[i+1]; c++) {
+                    a_s2[j++] = c;
+                }
+            }
+            else if(a_s1[i-1] > a_s1[i+1]) {
+                for(c = a_s1[i-1] - 1; c >= a_s1[i+1]; c--) {
+                    a_s2[j++] = c;
+                }
+            }
+        }
+        else {
+            a_s2[j++] = a_s1[i];
         }
     }
-    a_s1[j] = '\0';
+    a_s2[j] = '\0';
 }
