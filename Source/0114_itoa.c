@@ -24,11 +24,11 @@ int main()
            "                                                       |\n"
            "--------------------------------------------------------------------------------\n"
            "\033[0;0m");
-    printf("Numbers:");
+    printf("Numbers:              ");
     for(i = 0; i < MAXLENNUM; i++) {
         printf(" %d", a_num[i]);
     }
-    printf("|  Function "
+    printf("\nFunction "
            "\033[1;36m"
            "itoa(n, s[])"
            "\033[0;0m"
@@ -37,6 +37,7 @@ int main()
         itoa(a_num[i], a_str);
         printf(" %s", a_str);
     }
+    printf("\n");
     return 0;
 }
 
@@ -62,12 +63,11 @@ void reverse(char a_str[])
 {
     int i, j, len;
     char a_tmp[MAXLENSTR];
-    for(len = 0; a_str[len] != '\n'; len++) {
+    for(len = 0; a_str[len] != '\0'; len++) {
         a_tmp[len] = a_str[len];
     }
     for(i = 0, j = len - 1; j >= 0; j--, i++) {
         a_str[i] = a_tmp[j];
     }
-    a_str[len] = '\n';
-    a_str[len + 1] = '\0';
+    a_str[len] = '\0';
 }
