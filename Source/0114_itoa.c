@@ -1,11 +1,12 @@
 /** Exercise 3.4 */
-/** not finished TODO */
 
 #include <stdio.h>
+#include <limits.h>
 
-#define MAXLENNUM 10
+#define MAXLENNUM 12
 #define MAXLENSTR 15
 
+enum boolean {FALSE, TRUE};
 
 void itoa(int n, char a_str[]);
 void reverse(char a_str[]);
@@ -13,7 +14,8 @@ void reverse(char a_str[]);
 int main()
 {
     int i;
-    int a_num[MAXLENNUM] = {0, 15, 5345, 345655, 123456789, -2, -3456, -345098, 2147483647, -2147483648};
+    int a_num[MAXLENNUM] = {0, 15, 5345, 345655, 123456789, 2147483646, 2147483647,
+                            -2, -3456, -345098, -2147483647, -2147483648};
     char a_str[MAXLENSTR];
     printf("\033[0;35m"
            "--------------------------------------------------------------------------------\n"
@@ -43,15 +45,30 @@ int main()
 
 void itoa(int n, char a_str[])
 {
-    int i, sign;
+    int i, sign, ismin;
+    ismin = FALSE;
     if((sign = n) < 0) {
-        n = -n;
+        if(n == INT_MIN) {
+            ismin = TRUE;
+            n = INT_MAX;
+        }
+        else {
+            n = -n;
+        }
     }
     i = 0;
-    do {
-        a_str[i++] = n % 10 + '0';
+    if(ismin == TRUE) {
+        a_str[i++] = n % 10 + '1';
+        while ((n /= 10) > 0) {
+            a_str[i++] = n % 10 + '0';
+        }
     }
-    while ((n /= 10) > 0);
+    else {
+        do {
+            a_str[i++] = n % 10 + '0';
+        }
+        while ((n /= 10) > 0);
+    }
     if(sign < 0) {
         a_str[i++] = '-';
     }
