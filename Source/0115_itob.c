@@ -29,7 +29,7 @@ int main()
            "\033[0;0m");
     printf("Numbers:\n");
     for(i = 0; i < MAXLENNUM; i++) {
-        printf("\t\t(%d) %d\n", i+1, a_num[i]);
+        printf("\t(%02d) %d\n", i+1, a_num[i]);
     }
     printf("\nFunction "
            "\033[1;36m"
@@ -38,7 +38,7 @@ int main()
            ":\n");
     for(i = 0; i < MAXLENNUM; i++) {
         itob(a_num[i], a_str, 2);
-        printf("\t\t(%d) %s\n", i+1, a_str);
+        printf("\t(%02d) %s\n", i+1, a_str);
     }
     printf("\nFunction "
            "\033[1;36m"
@@ -47,7 +47,7 @@ int main()
            ":\n");
     for(i = 0; i < MAXLENNUM; i++) {
         itob(a_num[i], a_str, 8);
-        printf("\t\t(%d) %s\n", i+1, a_str);
+        printf("\t(%02d) %s\n", i+1, a_str);
     }
     printf("\nFunction "
            "\033[1;36m"
@@ -56,7 +56,7 @@ int main()
            ":\n");
     for(i = 0; i < MAXLENNUM; i++) {
         itob(a_num[i], a_str, 10);
-        printf("\t\t(%d) %s\n", i+1, a_str);
+        printf("\t(%02d) %s\n", i+1, a_str);
     }
     printf("\nFunction "
            "\033[1;36m"
@@ -65,7 +65,7 @@ int main()
            ":\n");
     for(i = 0; i < MAXLENNUM; i++) {
         itob(a_num[i], a_str, 16);
-        printf("\t\t(%d) %s\n", i+1, a_str);
+        printf("\t(%02d) %s\n", i+1, a_str);
     }
     return 0;
 }
@@ -73,40 +73,79 @@ int main()
 void itob(int n, char a_str[], short b)
 {
     int sign;
+    unsigned un;
     short i, ismin;
     i = 0;
     ismin = FALSE;
     if((sign = n) < 0) {
         if(n == INT_MIN) {
             ismin = TRUE;
-            n = INT_MAX;
+            un = INT_MAX;
+            un++;
         }
         else {
             n = -n;
         }
     }
     if(b == 2) {
-
+        if(ismin == TRUE) {
+            do {
+                a_str[i++] = un % 2 + '0';
+            }
+            while((n /= 2) > 0);
+        }
+        else {
+            do {
+                a_str[i++] = n % 2 + '0';
+            }
+            while((n /= 2) > 0);
+        }
     }
     else if(b == 8) {
-
+        if(ismin == TRUE) {
+            do {
+                a_str[i++] = un % 8 + '0';
+            }
+            while((n /= 8) > 0);
+        }
+        else {
+            do {
+                a_str[i++] = n % 8 + '0';
+            }
+            while((n /= 8) > 0);
+        }
     }
     else if(b == 10) {
         if(ismin == TRUE) {
-            a_str[i++] = n % 10 + '1';
-            while ((n /= 10) > 0) {
-                a_str[i++] = n % 10 + '0';
+            do {
+                a_str[i++] = un % 10 + '0';
             }
+            while((n /= 10) > 0);
         }
         else {
             do {
                 a_str[i++] = n % 10 + '0';
             }
-            while ((n /= 10) > 0);
+            while((n /= 10) > 0);
         }
     }
     else if(b == 16) {
-
+        if(ismin == TRUE) {
+            do {
+                a_str[i++] = un % 16 + '0';
+            }
+            while((n /= 16) > 0);
+        }
+        else {
+            do {
+                a_str[i] = n % 16 + '0';
+                if(a_str[i] > '9') {
+                    a_str[i] += 7;
+                }
+                i++;
+            }
+            while((n /= 16) > 0);
+        }
     }
     else {
         printf("Only binary, octal, decimal and hexadecimal number systems are supported");
