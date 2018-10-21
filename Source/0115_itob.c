@@ -1,5 +1,4 @@
 /** Exercise 3.5 */
-/** not finished TODO */
 
 #include <stdio.h>
 #include <limits.h>
@@ -80,7 +79,7 @@ void itob(int n, char a_str[], short b)
     if((sign = n) < 0) {
         if(n == INT_MIN) {
             ismin = TRUE;
-            un = INT_MAX;
+            un = (unsigned int) INT_MAX;
             un++;
         }
         else {
@@ -92,7 +91,7 @@ void itob(int n, char a_str[], short b)
             do {
                 a_str[i++] = un % 2 + '0';
             }
-            while((n /= 2) > 0);
+            while((un /= 2) > 0);
         }
         else {
             do {
@@ -106,7 +105,7 @@ void itob(int n, char a_str[], short b)
             do {
                 a_str[i++] = un % 8 + '0';
             }
-            while((n /= 8) > 0);
+            while((un /= 8) > 0);
         }
         else {
             do {
@@ -120,7 +119,7 @@ void itob(int n, char a_str[], short b)
             do {
                 a_str[i++] = un % 10 + '0';
             }
-            while((n /= 10) > 0);
+            while((un /= 10) > 0);
         }
         else {
             do {
@@ -134,7 +133,7 @@ void itob(int n, char a_str[], short b)
             do {
                 a_str[i++] = un % 16 + '0';
             }
-            while((n /= 16) > 0);
+            while((un /= 16) > 0);
         }
         else {
             do {
