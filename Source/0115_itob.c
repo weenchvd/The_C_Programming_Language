@@ -131,7 +131,11 @@ void itob(int n, char a_str[], short b)
     else if(b == 16) {
         if(ismin == TRUE) {
             do {
-                a_str[i++] = un % 16 + '0';
+                a_str[i] = un % 16 + '0';
+                if(a_str[i] > '9') {
+                    a_str[i] += 7;
+                }
+                i++;
             }
             while((un /= 16) > 0);
         }
